@@ -1,0 +1,7 @@
+(declare-const input Int)
+(define-sort Crash () Bool)
+(define-fun index_out_of_range ((in Int) (sz Int)) Crash (<= sz in))
+(assert (not (= input 2)))
+(assert (index_out_of_range input 2))
+(check-sat)
+(get-model)
