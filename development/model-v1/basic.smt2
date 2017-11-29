@@ -39,7 +39,12 @@
 (define-fun program_1 ((vec_1 (Vector Int))) (Item Int)
  (get_index (get_index (mk-item 2) (mk-item vec_1)) (mk-item vec_1))
 )
+
+(assert (< (size input_1) 4))
 (assert (> (size input_1) 0))
+
+;//see if can directly ignore a solution by != previous answer
+
 (assert (= (program_1 input_1) (as Crash (Item Int))))
 (check-sat)
 (get-model)
