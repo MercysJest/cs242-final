@@ -1,12 +1,17 @@
+;############################ OPTIONS #############################
+
+;
 ;############################### DATA TYPES ###############################
+;
 (declare-datatypes (T) ((Item Crash (mk-item (value T)))))
 (declare-datatypes (T) ((Vector (mk-vec (size Int) (data (Array Int T))))))
 ;
 ;############################### CORE FUNCTIONS ###############################
-(define-fun get_index_int ((index (Item Int)) (vec (Item (Vector Int)))) (Item Int)
+;
+(define-fun get_index_int ((vec (Item (Vector Int))) (index (Item Int))) (Item Int)
   (ite (or (= index (as Crash (Item Int))) (= vec (as Crash (Item (Vector Int))))) 
     (as Crash (Item Int)) 
-    (ite (>= (value index) (size (value vec)))
+    (ite (or (>= (value index) (size (value vec))) (< (value index) 0))
       (as Crash (Item Int))
       (mk-item (select (data (value vec)) (value index)))
     )
@@ -25,6 +30,7 @@
 )
 ;
 ;############################### INT OPERATORS ###############################
+;
 (define-fun div_int ((dividend (Item Int)) (divisor (Item Int))) (Item Int)
   (ite (or (= dividend (as Crash (Item Int))) (= divisor (as Crash (Item Int))))
     (as Crash (Item Int))
@@ -63,17 +69,28 @@
 )
 ;
 ;############################### PROGRAM DEFINITIONS ###############################
-(define-fun program_1 ((vec_1 (Vector Int))) (Item Int)
- (get_index_int (get_index_int (mk-item 2) (mk-item vec_1)) (mk-item vec_1))
+;
+(define-fun program_1 ((vec (Vector Int))) (Item Int)
+  (get_index_int (mk-item vec) (get_index_int (mk-item vec) (mk-item 0)))
+)
+(define-fun program_2 ((vec (Vector Int))) (Item Int)
+  (div_int (get_index_int (mk-item vec) (mk-item 0)) 
+           (get_index_int (mk-item vec) (mk-item 1))
+  )
 )
 ;
 ;############################### INPUT MODELS ###############################
+;
 (declare-const input_1 (Vector Int))
-(assert (< (size input_1) 4))
-(assert (> (size input_1) 0))
+(assert (= (size input_1) 2))
+;
+(declare-const input_2 (Vector Int))
+(assert (= (size input_2) 2))
 ;
 ;############################### SAT MODEL GENERATION ###############################
+;
 (assert (= (program_1 input_1) (as Crash (Item Int))))
+(assert (= (program_2 input_2) (as Crash (Item Int))))
 (check-sat)
 (get-model)
 ;

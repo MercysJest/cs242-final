@@ -1,4 +1,5 @@
 ;############################### INT OPERATORS ###############################
+;
 (define-fun div_int ((dividend (Item Int)) (divisor (Item Int))) (Item Int)
   (ite (or (= dividend (as Crash (Item Int))) (= divisor (as Crash (Item Int))))
     (as Crash (Item Int))

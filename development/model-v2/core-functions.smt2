@@ -1,8 +1,9 @@
 ;############################### CORE FUNCTIONS ###############################
-(define-fun get_index_int ((index (Item Int)) (vec (Item (Vector Int)))) (Item Int)
+;
+(define-fun get_index_int ((vec (Item (Vector Int))) (index (Item Int))) (Item Int)
   (ite (or (= index (as Crash (Item Int))) (= vec (as Crash (Item (Vector Int))))) 
     (as Crash (Item Int)) 
-    (ite (>= (value index) (size (value vec)))
+    (ite (or (>= (value index) (size (value vec))) (< (value index) 0))
       (as Crash (Item Int))
       (mk-item (select (data (value vec)) (value index)))
     )
