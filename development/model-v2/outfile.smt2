@@ -79,18 +79,25 @@
   )
 )
 ;
-;############################### INPUT MODELS ###############################
+;############################### INPUT SOLVER ###############################
 ;
-(declare-const input_1 (Vector Int))
-(assert (= (size input_1) 2))
-;
-(declare-const input_2 (Vector Int))
-(assert (= (size input_2) 2))
-;
-;############################### SAT MODEL GENERATION ###############################
-;
-(assert (= (program_1 input_1) (as Crash (Item Int))))
-(assert (= (program_2 input_2) (as Crash (Item Int))))
+(push)
+(echo "############ PROGRAM 1 (ATTEMPTING TO FIND CRASH) ############")
+(declare-const input (Vector Int))
+(assert (= (size input) 2))
+(assert (forall ((idx Int)) (>= (select (data input) idx) 0)))
+(assert (= (program_1 input) (as Crash (Item Int))))
 (check-sat)
 (get-model)
+(pop)
+;
+(push)
+(echo "############ PROGRAM 2 (ATTEMPTING TO FIND CRASH) ############")
+(declare-const input (Vector Int))
+(assert (= (size input) 2))
+(assert (forall ((idx Int)) (>= (select (data input) idx) 0)))
+(assert (= (program_2 input) (as Crash (Item Int))))
+(check-sat)
+(get-model)
+(pop)
 ;
