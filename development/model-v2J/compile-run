@@ -1,0 +1,2 @@
+#!/bin/bash
+cat set-options.smt2 data-types.smt2 core-functions.smt2 int-operators.smt2 program-defs.smt2 input-solver.smt2 > outfile.smt2 && z3 outfile.smt2
