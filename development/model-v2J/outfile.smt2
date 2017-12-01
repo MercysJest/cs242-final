@@ -28,6 +28,21 @@
     )
   )
 )
+;(define-fun mk_vec ((first (Item Int)) (second (Item Int))) (Item (Vector Int))
+;    ((declare-const a (Array Int))
+;     (assert (= (select a 0) (value first)))
+;     (assert (= (select a 1) (value second)))
+;     (mk-item (mk-vec 2 a))
+;    )
+;)
+(declare-fun mk_vec ((first (Item Int)) (second (Item Int))) ((Item (Vector Int))))
+(assert (forall ((x (Item Int)) (y (Item Int)))
+        (=> (and (not (= x (as Crash (Item Int)))) (not (= y (as Crash (Item Int)))))
+        (and (= (select (data (value (mk_vec x y))) 0) (value x))
+             (= (select (data (value (mk_vec x y))) 1) (value y))
+             (= 2 (size (value (mk_vec x y)))) ))
+    )
+)
 ;
 ;############################### INT OPERATORS ###############################
 ;
