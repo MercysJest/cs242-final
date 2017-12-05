@@ -20,4 +20,14 @@
     )
   )
 )
+;For-loop definition is commented out to make model definitions pretty
+;(define-fun-rec for_int ((status (Packet Int)) (body (Array (Item Int) (Item Int)))) (Packet Int) 
+;  (ite (= (prev_return status) (as Crash (Item Int))) 
+;    (mk-pack -1 (as Crash (Item Int)))
+;    (ite (<= 0 (curr_idx status))
+;     (for_int (mk-pack (- (curr_idx status) 1) (select body (prev_return status))) body)
+;     status
+;    )
+;  )
+;)
 ;
